@@ -11,8 +11,7 @@ import plotly.graph_objects as go
 # noinspection GrazieInspection
 class Plot:
     """
-    Graficar contiene funciones para realizar gráficos predeterminados, tiene un sistema de colores semánticos
-    útiles para
+    Graficar contiene funciones para realizar gráficos predeterminados, tiene un sistema de colores semánticos.
     """
 
     def __init__(self, colors=None):
@@ -38,13 +37,16 @@ class Plot:
         """
         Display a heatmap summarizing the columns x and y by aggfunc.
 
-        :param df: Dataframe with the data.
-        :param x: Column to display in the x-axis. (Categorical).
-        :param y: Column to display in the y-axis. (Categorical).
-        :param aggfunc: Function to summarize the data.
-        :param fill_value: Value to replace nulls after the aggregation.
-        :param kwargs: Aditional parameters to pass to plotly.express.imshow.
-        :return: A Figure that can be displayed with the method show().
+        Args:
+            df (): Dataframe with the data.
+            x (): Column to display in the x-axis. (Categorical).
+            y (): Column to display in the y-axis. (Categorical).
+            aggfunc (): Function to summarize the data.
+            fill_value (): Value to replace nulls after the aggregation.
+            **kwargs (): Aditional parameters to pass to plotly.express.imshow.
+
+        Returns:
+            A Figure that can be displayed with the method show().
         """
         df_heatmap = df[[x, y]].pivot_table(index=y, columns=x, aggfunc=aggfunc, fill_value=fill_value)
         return px.imshow(df_heatmap, color_continuous_scale=self.color_continuous_scale, title=f'{x} vs {y}', **kwargs)
@@ -53,13 +55,17 @@ class Plot:
         """
         Boxplot
 
-        :param df: Dataframe with the data.
-        :param x: Column to display in the x-axis. (Categorical)
-        :param y: Column to display in the y-axis. (Numerical)
-        :param title: Plot title.
-        :param notched: Set a notch in the plot.
-        :param kwargs: Aditional parameters to pass to plotly.express.imshow.
-        :return: A Figure that can be displayed with the method show().
+        Args:
+            df (): Dataframe with the data.
+            x (): Column to display in the x-axis. (Categorical)
+            y (): Column to display in the y-axis. (Numerical)
+            title (): Plot title.
+            notched (): Set a notch in the plot.
+            **kwargs (): Aditional parameters to pass to plotly.express.imshow.
+
+        Returns:
+            A Figure that can be displayed with the method show().
+
         """
         if title is None:
             title = f'Boxplot {x} vs {y}' if x is not None else f'Boxplot {y}'
@@ -70,12 +76,15 @@ class Plot:
         """
         Histogram
 
-        :param df: Dataframe with the data.
-        :param x: Column to display in the x-axis. (Categorical | Numerical)
-        :param nbins: Cant of bins to group the data (If x is categorical, ignores this parameter).
-        :param text_auto: If False, doesn't show value labels.
-        :param kwargs: Aditional parameters to pass to plotly.express.imshow.
-        :return: A Figure that can be displayed with the method show().
+        Args:
+            df (): Dataframe with the data.
+            x (): Column to display in the x-axis. (Categorical | Numerical)
+            nbins (): Cant of bins to group the data (If x is categorical, ignores this parameter).
+            text_auto (): If False, doesn't show value labels.
+            **kwargs (): Aditional parameters to pass to plotly.express.imshow.
+
+        Returns:
+            A Figure that can be displayed with the method show().
         """
         return px.histogram(df, x=x, text_auto=text_auto,
                             color_discrete_sequence=self.color_discrete_sequence,
@@ -87,13 +96,17 @@ class Plot:
         """
         Scatter plot
 
-        :param df: Dataframe with the data.
-        :param x: Column to display in the x-axis. (Numerical)
-        :param y: Column to display in the y-axis. (Numerical)
-        :param color: Column to separate points by color.
-        :param correct_incorrect_map: A dictionary that maps the columns value to the assigned colors.
-        :param kwargs: Aditional parameters to pass to plotly.express.imshow.
-        :return: A Figure that can be displayed with the method show().
+        Args:
+            df (): Dataframe with the data.
+            x (): Column to display in the x-axis. (Numerical).
+            y (): Column to display in the y-axis. (Numerical).
+            color (): Column to separate points by color (Categorical).
+            correct_incorrect_map (): A dictionary that maps the columns value to the assigned colors.
+            **kwargs (): Aditional parameters to pass to plotly.express.imshow.
+
+        Returns:
+            A Figure that can be displayed with the method show().
+
         """
         if correct_incorrect_map is None:
             color_discrete_sequence = self.color_discrete_sequence
@@ -128,18 +141,21 @@ class Plot:
         """
         Pyramid plot
 
-        :param df: Dataframe with the data.
-        :param x: Column to display in the x-axis. (Numerical)
-        :param nbins: Cant of bins to group the data.
-        :param cat_col: Column containing the categories. (Categorical)
-        :param cat1: Name of the first category.
-        :param cat2: Name of the second category.
-        :param title: Plot title.
-        :param cat1name: Display name of the first category in the plot.
-        :param cat2name: Display name of the second category in the plot.
-        :param cat1color: Display color of the first category in the plot.
-        :param cat2color: Display color of the second category in the plot.
-        :return: A Figure that can be displayed with the method show().
+        Args:
+            df (): Dataframe with the data.
+            x (): Column to display in the x-axis. (Numerical).
+            nbins (): Cant of bins to group the data.
+            cat_col (): Column containing the categories. (Categorical).
+            cat1 (): Name of the first category.
+            cat2 (): Name of the second category.
+            title (): Plot title.
+            cat1name (): Display name of the first category in the plot.
+            cat2name (): Display name of the second category in the plot.
+            cat1color (): Display color of the first category in the plot.
+            cat2color (): Display color of the second category in the plot.
+
+        Returns:
+            A Figure that can be displayed with the method show().
         """
         cat1name = cat1 if cat1name is None else cat1name
         cat2name = cat2 if cat2name is None else cat2name
