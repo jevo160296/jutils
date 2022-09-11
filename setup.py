@@ -31,7 +31,7 @@ setup(
     description="JUtils contains some functions and clases I've built to accelerate some repetitive tasks.",
     entry_points={
         'console_scripts': [
-            'jutils=jutils.cli:main',
+
         ],
     },
     install_requires=requirements,
