@@ -13,9 +13,11 @@ from jutils.visual import Plot
 
 def paciencia(funcion, tiempo=10):
     """Paciencia"""
+
     def _wrapper(self, **kwargs):
         funcion(self, **kwargs)
         sleep(tiempo)
+
     return _wrapper
 
 
@@ -50,6 +52,10 @@ class TestJutils(unittest.TestCase):
         """"""
         self.plot.box(self.df, x='category2', y='value1').show()
 
+    def test_box_without_x(self):
+        """"""
+        self.plot.box(self.df, y='value1').show()
+
     def test_box_numeric_numeric(self):
         """"""
         self.plot.box(self.df, x='value1', y='value2').show()
@@ -65,7 +71,6 @@ class TestJutils(unittest.TestCase):
         """"""
         self.plot.histogram(self.df, x='value1', nbins=5).show()
         self.plot.histogram(self.df, x='category2', nbins=5).show()
-
 
     @paciencia
     def test_scatter(self):
