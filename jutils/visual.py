@@ -51,15 +51,17 @@ class Plot:
         df_heatmap = df[[x, y]].pivot_table(index=y, columns=x, aggfunc=aggfunc, fill_value=fill_value)
         return px.imshow(df_heatmap, color_continuous_scale=self.color_continuous_scale, title=f'{x} vs {y}', **kwargs)
 
-    def box(self, df: DataFrame, x: str = None, y: str = None, title: str = None, notched=True, **kwargs) -> go.Figure:
+    def box(self, df: DataFrame, x: str = None, y: str = None, title: str = None, nbins=5, notched=False, **kwargs) -> go.Figure:
         """
-        Boxplot
+        Display a boxplot, in reality the x axis is always categorical, but when numerical data is passed
+        the x axis is grouped in bins and then displayed.
 
         Args:
             df (): Dataframe with the data.
-            x (): Column to display in the x-axis. (Categorical)
+            x (): Column to display in the x-axis. (Categorical | Numerical)
             y (): Column to display in the y-axis. (Numerical)
             title (): Plot title.
+            nbins: Cant of bins to plot when x is numerical.
             notched (): Set a notch in the plot.
             **kwargs (): Aditional parameters to pass to plotly.express.imshow.
 
@@ -67,9 +69,18 @@ class Plot:
             A Figure that can be displayed with the method show().
 
         """
+        transformed_df = df.copy()
+        if pd.api.types.is_numeric_dtype(transformed_df[x]):
+            minimo = transformed_df[x].min()
+            maximo = transformed_df[x].max()
+            limites = [round(x) for x in np.linspace(minimo, maximo, nbins)]
+            labels = [f'[{lim_min}-{lim_max})'
+                      for lim_min, lim_max in zip(limites[0:nbins - 1], limites[1:nbins])]
+            bins = pd.cut(transformed_df[x], bins=limites, labels=labels, include_lowest=True)
+            transformed_df[x] = bins
         if title is None:
             title = f'Boxplot {x} vs {y}' if x is not None else f'Boxplot {y}'
-        return px.box(df, x=x, y=y, title=title, notched=notched,
+        return px.box(transformed_df, x=x, y=y, title=title, notched=notched,
                       color_discrete_sequence=self.color_discrete_sequence, **kwargs)
 
     def histogram(self, df=None, x=None, nbins: int = None, text_auto=True, **kwargs) -> go.Figure:

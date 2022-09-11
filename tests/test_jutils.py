@@ -2,11 +2,11 @@
 
 """Tests for `jutils` package."""
 
-import random
 import unittest
 from time import sleep
 
 import pandas as pd
+import numpy as np
 
 from jutils.visual import Plot
 
@@ -24,17 +24,16 @@ class TestJutils(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures, if any."""
-        rnd_gen = random.Random(x=0)
-        x = ['A', 'B', 'C']
-        y = ['1', '2', '3', '4']
-        z = ['F', 'M']
-        rows = range(5000)
+        category1 = ['F', 'M']
+        category2 = ['A', 'B', 'C']
+        category3 = ['1', '2', '3', '4']
+        cant = 5000
         self.df = pd.DataFrame({
-            'x': [x[rnd_gen.randint(0, 2)] for _ in rows],
-            'y': [y[rnd_gen.randint(0, 3)] for _ in rows],
-            'z': [z[rnd_gen.randint(0, 1)] for _ in rows],
-            'value1': [(rnd_gen.random() - 0.5) * 2000 for _ in rows],
-            'value2': [(rnd_gen.random() - 0.2) * 5500 for _ in rows]
+            'category1': np.random.choice(category1, cant),
+            'category2': np.random.choice(category2, cant),
+            'category3': np.random.choice(category3, cant),
+            'value1': np.random.randint(-1200, 4000, cant),
+            'value2': np.random.randint(4000, 11000, cant)
         })
         self.plot = Plot()
 
@@ -44,29 +43,34 @@ class TestJutils(unittest.TestCase):
     @paciencia
     def test_heat_map(self):
         """Test something."""
-        self.plot.heatmap(self.df, x='x', y='y', aggfunc=len, fill_value=0).show()
+        self.plot.heatmap(self.df, x='category2', y='category3', aggfunc=len, fill_value=0).show()
 
     @paciencia
     def test_box(self):
         """"""
-        self.plot.box(self.df, x='x', y='value1').show()
+        self.plot.box(self.df, x='category2', y='value1').show()
+
+    def test_box_numeric_numeric(self):
+        """"""
+        self.plot.box(self.df, x='value1', y='value2').show()
 
     @paciencia
     def test_histogram(self):
         """"""
         self.plot.histogram(self.df, x='value1').show()
-        self.plot.histogram(self.df, x='x').show()
+        self.plot.histogram(self.df, x='category2').show()
 
     @paciencia
     def test_histogram_with_bins(self):
         """"""
         self.plot.histogram(self.df, x='value1', nbins=5).show()
-        self.plot.histogram(self.df, x='x', nbins=5).show()
+        self.plot.histogram(self.df, x='category2', nbins=5).show()
+
 
     @paciencia
     def test_scatter(self):
         """"""
-        self.plot.scatter(self.df, x='value1', y='value2', color='x').show()
+        self.plot.scatter(self.df, x='value1', y='value2', color='category2').show()
 
     @paciencia
     def test_pyramid(self):
@@ -75,7 +79,7 @@ class TestJutils(unittest.TestCase):
             self.df,
             x='value1',
             nbins=6,
-            cat_col='z',
+            cat_col='category1',
             cat1='F',
             cat1name='Femenino',
             cat1color=self.plot.colors['femenine'],
@@ -87,4 +91,4 @@ class TestJutils(unittest.TestCase):
     @paciencia
     def test_pyramid_defaults(self):
         """"""
-        self.plot.pyramid(self.df, x='value1', nbins=6, cat_col='z', cat1='F', cat2='M')
+        self.plot.pyramid(self.df, x='value1', nbins=6, cat_col='category1', cat1='F', cat2='M').show()
