@@ -97,3 +97,10 @@ class TestJutils(unittest.TestCase):
     def test_pyramid_defaults(self):
         """"""
         self.plot.pyramid(self.df, x='value1', nbins=6, cat_col='category1', cat1='F', cat2='M').show()
+
+    @paciencia
+    def test_with_colors(self):
+        """"""
+        figura = self.plot.box(self.df, y='value1', x='category1')
+        figura.add_trace(self.plot.with_colors({'c1': '#000'}).box(self.df, y='value2', x='category2').data[0])
+        figura.show()

@@ -33,6 +33,11 @@ class Plot:
         self.color_discrete_sequence = [self.colors[c] for c in ['c1', 'c2', 'c3', 'c4', 'c5']]
         self.color_continuous_scale = ["#fff", self.colors['c1']]
 
+    def with_colors(self, colors):
+        new_colors: dict = self.colors
+        new_colors.update(colors)
+        return Plot(new_colors)
+
     def heatmap(self, df: DataFrame, x: str, y: str, aggfunc=len, fill_value=0, **kwargs) -> go.Figure:
         """
         Display a heatmap summarizing the columns x and y by aggfunc.
