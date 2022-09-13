@@ -19,7 +19,7 @@ JUtils
 JUtils contains some functions and clases I've built to accelerate some repetitive tasks.
 
 To install localy use:
-pip install "C:\Users\jevo1\Documents\Python Scripts\jutils\dist\jutils-0.1.0-py2.py3-none-any.whl"
+pip install "C:\\Users\\jevo1\\Documents\\Python Scripts\\jutils\\dist\\jutils-0.1.0-py2.py3-none-any.whl"
 
 To create the wheel use: python setup.py bdist_wheel
 
