@@ -17,6 +17,7 @@ class DataUtils:
         self.input_file_name = input_file_name
         self._X_names: Union[None, list] = None
         self._data: Union[None, DataFrame] = None
+        self._input_data: Union[None, DataFrame] = None
         self._train_test_data: Union[None, DataFrame] = None
         self._validation_data: Union[None, DataFrame] = None
         self._model = None
@@ -33,13 +34,17 @@ class DataUtils:
 
     @property
     def data(self) -> DataFrame:
-        if self._data is None:
-            self._data = self.load_data(self.input_file_path)
         return self._data
 
     @data.setter
     def data(self, data):
         self._data = data
+
+    @property
+    def input_data(self) -> DataFrame:
+        if self._input_data is None:
+            self._input_data = self.load_data(self.input_file_path)
+        return self._input_data.copy()
 
     @property
     def train_test_data(self) -> DataFrame:
