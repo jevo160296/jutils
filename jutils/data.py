@@ -1,12 +1,18 @@
 from pathlib import Path
-from typing import Union
+from typing import Union, Callable
 from pandas import DataFrame
 import joblib
 import pandas as pd
 
 
 class DataUtils:
-    def __init__(self, data_folder_path: Path, input_file_name: str):
+    def __init__(self,
+                 data_folder_path: Path,
+                 input_file_name: str,
+                 load_data: Callable[[Path], DataFrame] = lambda input_filepath: pd.read_csv(input_filepath, sep=';'),
+                 save_data: Callable[[DataFrame, Path], None] = lambda df, filepath: df.to_csv(filepath, sep=';',
+                                                                                               index=False)
+                 ):
         self.data_folder_path = data_folder_path
         self.input_file_name = input_file_name
         self._X_names: Union[None, list] = None
@@ -14,6 +20,8 @@ class DataUtils:
         self._train_test_data: Union[None, DataFrame] = None
         self._validation_data: Union[None, DataFrame] = None
         self._model = None
+        self.load_data = load_data
+        self.save_data = save_data
 
     @property
     def X_names(self):
@@ -87,11 +95,3 @@ class DataUtils:
     def models_path(self):
         path = self.data_folder_path.parent.joinpath('models/')
         return path
-
-    @staticmethod
-    def load_data(input_filepath: Path) -> DataFrame:
-        return pd.read_csv(input_filepath, sep=';')
-
-    @staticmethod
-    def save_data(df: DataFrame, filepath: Path):
-        df.to_csv(filepath, sep=';', index=False)
