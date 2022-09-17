@@ -100,3 +100,19 @@ class DataUtils:
     def models_path(self):
         path = self.data_folder_path.parent.joinpath('models/')
         return path
+
+    @property
+    def external_path(self):
+        return self.data_folder_path.joinpath('external/')
+
+    @property
+    def interim_path(self):
+        return self.data_folder_path.joinpath('interim/')
+
+    @property
+    def processed_path(self):
+        return self.data_folder_path.joinpath('processed/')
+
+    @property
+    def raw_path(self):
+        return self.data_folder_path.joinpath('raw/')
