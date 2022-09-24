@@ -104,3 +104,10 @@ class TestJutils(unittest.TestCase):
         figura = self.plot.box(self.df, y='value1', x='category1')
         figura.add_trace(self.plot.with_colors({'c1': '#000'}).box(self.df, y='value2', x='category2').data[0])
         figura.show()
+
+    @paciencia
+    def test_combinar(self):
+        """"""
+        figura1 = self.plot.box(self.df, y='value1', x='category1')
+        figura2 = self.plot.with_colors({'c1': '#000'}).box(self.df, y='value2', x='category2')
+        self.plot.combine_plots(figura1,figura2).show()

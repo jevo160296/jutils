@@ -38,6 +38,20 @@ class Plot:
         new_colors.update(colors)
         return Plot(new_colors)
 
+    @staticmethod
+    def combine_plots(plot1: go.Figure, plot2: go.Figure) -> go.Figure:
+        """
+        Une dos graficos en uno.
+        Args:
+            plot1 (): Primer gráfico
+            plot2 (): Segundo gráfico
+
+        Returns:
+            Un objeto de plotly con los dos graficos combinados.
+
+        """
+        return go.Figure(data=plot1.data + plot2.data)
+
     def heatmap(self, df: DataFrame, x: str, y: str, aggfunc=len, fill_value=0, **kwargs) -> go.Figure:
         """
         Display a heatmap summarizing the columns x and y by aggfunc.
@@ -56,7 +70,8 @@ class Plot:
         df_heatmap = df[[x, y]].pivot_table(index=y, columns=x, aggfunc=aggfunc, fill_value=fill_value)
         return px.imshow(df_heatmap, color_continuous_scale=self.color_continuous_scale, title=f'{x} vs {y}', **kwargs)
 
-    def box(self, df: DataFrame, y: str, x: str = None, title: str = None, nbins=5, notched=False, **kwargs) -> go.Figure:
+    def box(self, df: DataFrame, y: str, x: str = None, title: str = None, nbins=5, notched=False,
+            **kwargs) -> go.Figure:
         """
         Display a boxplot, in reality the x axis is always categorical, but when numerical data is passed
         the x axis is grouped in bins and then displayed.
